@@ -107,7 +107,7 @@ export default async function PoemPage({
             className="animate-fade-in flex flex-wrap justify-center gap-2 mt-16"
             style={{ opacity: 0, animationFillMode: "forwards", animationDelay: "800ms" }}
           >
-            {poem.tags.map((tag) => (
+            {poem.tags.map((tag : string) => (
               <span key={tag} className="tag">
                 {tag}
               </span>
