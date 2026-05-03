@@ -2,7 +2,7 @@
 
 
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
+import { sendContactEmail } from "@/lib/email/sendContactEmail";
 
 export default function ContactPage() {
 	const [sent, setSent] = useState(false);
@@ -12,22 +12,11 @@ export default function ContactPage() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			// Replace these with your actual EmailJS service, template, and public key
-			const serviceId = "YOUR_SERVICE_ID";
-			const templateId = "YOUR_TEMPLATE_ID";
-			const publicKey = "YOUR_PUBLIC_KEY";
-
-			await emailjs.send(
-				serviceId,
-				templateId,
-				{
-					from_name: form.name,
-					from_email: form.email,
-					message: form.message,
-					to_email: "sharma.anahita.as@gmail.com",
-				},
-				publicKey
-			);
+			await sendContactEmail({
+				name: form.name,
+				email: form.email,
+				message: form.message,
+			});
 			setSent(true);
 		} catch (error) {
 			alert("Failed to send message. Please try again later.");
