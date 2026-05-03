@@ -1,17 +1,37 @@
 "use client";
 
+
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 
 export default function ContactPage() {
 	const [sent, setSent] = useState(false);
 	const [form, setForm] = useState({ name: "", email: "", message: "" });
 
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		// In production, wire this to an email service (Resend, Formspree, etc.)
-		// For now, just simulate a send
-		await new Promise((r) => setTimeout(r, 600));
-		setSent(true);
+		try {
+			// Replace these with your actual EmailJS service, template, and public key
+			const serviceId = "YOUR_SERVICE_ID";
+			const templateId = "YOUR_TEMPLATE_ID";
+			const publicKey = "YOUR_PUBLIC_KEY";
+
+			await emailjs.send(
+				serviceId,
+				templateId,
+				{
+					from_name: form.name,
+					from_email: form.email,
+					message: form.message,
+					to_email: "sharma.anahita.as@gmail.com",
+				},
+				publicKey
+			);
+			setSent(true);
+		} catch (error) {
+			alert("Failed to send message. Please try again later.");
+		}
 	};
 
 	return (
