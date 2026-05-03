@@ -55,3 +55,23 @@ export default async function PoemsPage() {
 		</div>
 	);
 }
+
+// export default async function PoemsPage() {
+//   let poems = [];
+//   let errorMsg = null;
+  
+//   try {
+//     poems = await getPublishedPoems();
+//   } catch (e: any) {
+//     errorMsg = e.message;
+//   }
+
+//   return (
+//     <div className="min-h-screen px-6 pt-32 pb-20">
+//       {errorMsg && (
+//         <p className="text-red-400 text-center">{errorMsg}</p>
+//       )}
+//       {/* rest of your JSX */}
+//     </div>
+//   );
+// }

@@ -63,16 +63,20 @@ export async function getPoemById(id: string): Promise<Poem | null> {
 
 export async function getFeaturedPoem(): Promise<Poem | null> {
 	const supabase = await createClient();
+
 	const { data, error } = await supabase
 		.from("poems")
 		.select("*")
 		.eq("is_published", true)
 		.order("created_at", { ascending: false })
-		.limit(1)
-		.single();
+		.limit(1);
 
-	if (error) return null;
-	return data;
+	if (error) {
+		console.error(error);
+		return null;
+	}
+
+	return data?.[0] || null;
 }
 
 export async function createPoem(formData: {
