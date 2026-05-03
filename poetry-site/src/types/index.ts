@@ -1,3 +1,5 @@
+// Export a Poem type for convenience
+export type Poem = Database["public"]["Tables"]["poems"]["Row"];
 export type Database = {
   public: {
     Tables: {
