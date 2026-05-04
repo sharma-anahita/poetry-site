@@ -1,4 +1,3 @@
-// Export a Poem type for convenience
 export type Database = {
   public: {
     Tables: {
@@ -32,4 +31,6 @@ export type Database = {
     };
   };
 };
+
+// Must come after Database is defined
 export type Poem = Database["public"]["Tables"]["poems"]["Row"];
