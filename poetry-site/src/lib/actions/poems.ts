@@ -22,7 +22,7 @@ export async function getPublishedPoems(): Promise<Poem[]> {
 		.order("created_at", { ascending: false });
 
 	if (error) throw error;
-	return data || [];
+	return (data || []) as Poem[];
 }
 
 export async function getAllPoems(): Promise<Poem[]> {
@@ -33,7 +33,7 @@ export async function getAllPoems(): Promise<Poem[]> {
 		.order("created_at", { ascending: false });
 
 	if (error) throw error;
-	return data || [];
+	return (data || []) as Poem[];
 }
 
 export async function getPoemBySlug(slug: string): Promise<Poem | null> {
@@ -46,7 +46,7 @@ export async function getPoemBySlug(slug: string): Promise<Poem | null> {
 		.single();
 
 	if (error) return null;
-	return data;
+	return data as Poem;
 }
 
 export async function getPoemById(id: string): Promise<Poem | null> {
@@ -58,7 +58,7 @@ export async function getPoemById(id: string): Promise<Poem | null> {
 		.single();
 
 	if (error) return null;
-	return data;
+	return data as Poem;
 }
 
 export async function getFeaturedPoem(): Promise<Poem | null> {
@@ -76,7 +76,7 @@ export async function getFeaturedPoem(): Promise<Poem | null> {
 		return null;
 	}
 
-	return data?.[0] || null;
+	return (data?.[0] || null) as Poem | null;
 }
 
 export async function createPoem(formData: {
@@ -88,7 +88,8 @@ export async function createPoem(formData: {
 	const supabase = await createClient();
 	const slug = slugify(formData.title);
 
-	const { data, error } = await supabase
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const { data, error } = await (supabase as any)
 		.from("poems")
 		.insert({
 			...formData,
@@ -100,7 +101,7 @@ export async function createPoem(formData: {
 	if (error) throw error;
 	revalidatePath("/poems");
 	revalidatePath("/admin");
-	return data;
+	return data as Poem;
 }
 
 export async function updatePoem(
@@ -109,12 +110,13 @@ export async function updatePoem(
 ): Promise<Poem> {
 	const supabase = await createClient();
 
-	const updateData = { ...updates };
+	const updateData = { ...updates } as Record<string, unknown>;
 	if (updates.title) {
-		(updateData as Record<string, unknown>).slug = slugify(updates.title);
+		updateData.slug = slugify(updates.title);
 	}
 
-	const { data, error } = await supabase
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const { data, error } = await (supabase as any)
 		.from("poems")
 		.update({ ...updateData, updated_at: new Date().toISOString() })
 		.eq("id", id)
@@ -124,7 +126,7 @@ export async function updatePoem(
 	if (error) throw error;
 	revalidatePath("/poems");
 	revalidatePath("/admin");
-	return data;
+	return data as Poem;
 }
 
 export async function deletePoem(id: string): Promise<void> {
@@ -140,7 +142,8 @@ export async function togglePublish(
 	is_published: boolean
 ): Promise<void> {
 	const supabase = await createClient();
-	const { error } = await supabase
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const { error } = await (supabase as any)
 		.from("poems")
 		.update({ is_published, updated_at: new Date().toISOString() })
 		.eq("id", id);
