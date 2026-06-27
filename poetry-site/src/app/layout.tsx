@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
+import RecoveryRedirect from "@/components/RecoveryRedirect";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -31,7 +32,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className={`${playfair.variable} ${cormorant.variable}`}>
-			<body className="bg-ink text-parchment antialiased">{children}</body>
+			<body className="bg-ink text-parchment antialiased">
+				<RecoveryRedirect />
+				{children}
+			</body>
 		</html>
 	);
 }
